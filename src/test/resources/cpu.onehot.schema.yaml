@@ -1,0 +1,136 @@
+--- !<Schema>
+columns:
+- !<Integer>
+  name: "vendor[adviser]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[amdahl]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[apollo]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[basf]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[bti]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[burroughs]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[c.r.d]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[cambex]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[cdc]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[dec]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[dg]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[formation]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[four-phase]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[gould]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[harris]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[honeywell]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[hp]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[ibm]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[ipl]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[magnuson]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[microdata]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[nas]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[ncr]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[nixdorf]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[perkin-elmer]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[prime]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[siemens]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[sperry]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[sratus]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "vendor[wang]"
+  minAllowedValue: 0
+  maxAllowedValue: 1
+- !<Integer>
+  name: "MYCT"
+- !<Integer>
+  name: "MMIN"
+- !<Integer>
+  name: "MMAX"
+- !<Integer>
+  name: "CACH"
+- !<Integer>
+  name: "CHMIN"
+- !<Integer>
+  name: "CHMAX"
+- !<Integer>
+  name: "class"
