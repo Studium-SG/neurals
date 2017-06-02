@@ -74,11 +74,22 @@ class CsvDataSetIterator(
 
         val lines = ArrayList<Array<String>>(num)
         var toRead = num
-        while (nextRecord != null && toRead-- > 0) {
-            lines.add(nextRecord!!)
+        var skippedNullRows = 0
+        while (nextRecord != null && toRead > 0) {
+            if (nextRecord!!.none {
+                @Suppress("SENSELESS_COMPARISON")
+                it == null
+            }) {
+                lines.add(nextRecord!!)
+                toRead--
+            } else {
+                skippedNullRows++
+            }
             nextRecord = parser.parseNext()
             if (nextRecord == null) parser.stopParsing()
         }
+
+        if (skippedNullRows > 0) Logger.LOG.warn("{} rows skipped from csv file due to null values", skippedNullRows)
 
         val avail = lines.size
         val x = Nd4j.create(avail, xWidth)

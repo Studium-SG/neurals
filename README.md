@@ -242,6 +242,11 @@ assertNotNull(value)
 assertTrue(Math.abs(value!! - 199.0) < 0.5)
 ```
 
+## Missing values
+
+Rows in CSVs with missing values are skipped. Warning is presented to the log with
+the number of rows skipped.
+
 ## Java usage
 
 See [Kotlin-Java-interop](https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html)

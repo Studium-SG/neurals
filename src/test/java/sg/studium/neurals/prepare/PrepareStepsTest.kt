@@ -507,4 +507,21 @@ columns:
         assertEquals(irisOneHotTxt, baos.toString())
     }
 
+    @Test
+    fun oneHotWMissingValues() {
+        val baos = ByteArrayOutputStream()
+        csvToOneHot({ resource("cpu.with.vendor.missing.values.csv") }, baos)
+        baos.close()
+        assertEquals("""vendor[adviser],vendor[amdahl],vendor[apollo],vendor[basf],vendor[bti],MYCT,MMIN,MMAX,CACH,CHMIN,CHMAX,class
+1,0,0,0,0,125,256,6000,256,16,128,199
+0,1,0,0,0,29,8000,32000,32,8,32,253
+0,0,1,0,0,400,1000,3000,0,1,2,23
+0,0,1,0,0,400,512,3500,4,1,6,24
+0,0,0,1,0,60,2000,8000,65,1,8,70
+0,0,0,1,0,50,4000,16000,65,1,8,117
+0,0,0,0,1,350,64,64,0,1,4,15
+0,0,0,0,1,200,512,16000,0,4,32,64
+""", baos.toString())
+    }
+
 }

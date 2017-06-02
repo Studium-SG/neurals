@@ -57,4 +57,13 @@ class CsvToXYTest {
         assertEquals(xy.Y.first()[1], 0.0)
         assertEquals(xy.Y.first()[2], 0.0)
     }
+
+    @Test
+    fun missingValues() {
+        val xy =  csvToXY(resource("cpu.with.vendor.missing.onehot.csv"), "class")
+        assertEquals(xy.X.size, 11)
+        assertEquals(xy.X.first().size, 36)
+        assertEquals(xy.Y.size, 11)
+        assertEquals(xy.Y.first().size, 1)
+    }
 }

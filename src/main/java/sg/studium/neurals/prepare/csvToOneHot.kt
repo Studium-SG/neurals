@@ -8,6 +8,7 @@ import org.datavec.api.transform.ColumnType
 import org.datavec.api.transform.TransformProcess
 import org.datavec.api.transform.schema.Schema
 import org.datavec.api.writable.Text
+import org.slf4j.LoggerFactory
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -35,13 +36,21 @@ fun csvToOneHot(csvIn: InputStream, csvOut: OutputStream, schemaIn: Schema, writ
     if (writeHeaders)
         writer.writeRow(tp.finalSchema.columnNames as Collection<Any>?)
 
+    var skippedNullRows = 0
     var row = parser.parseNext()
     while (row != null) {
-        writer.writeRow(tp.execute(row.map { Text(it) }).map { it.toString() })
+        // only if all values provided, skipping rows with any null fields
+        if (row.none { it == null }) {
+            writer.writeRow(tp.execute(row.map { Text(it) }).map { it.toString() })
+        } else {
+            skippedNullRows++
+        }
         row = parser.parseNext()
     }
     parser.stopParsing()
     writer.close()
+
+    if (skippedNullRows > 0) Logger.LOG.warn("{} rows skipped from csv file due to null values", skippedNullRows)
 
     return tp.finalSchema
 }
@@ -56,5 +65,11 @@ fun csvToOneHot(csvIn: () -> InputStream, csvOut: OutputStream) {
         csvIn.invoke().use { is2 ->
             csvToOneHot(is2, csvOut, schema)
         }
+    }
+}
+
+internal class Logger {
+    internal companion object {
+        val LOG = LoggerFactory.getLogger(Logger::class.java)!!
     }
 }

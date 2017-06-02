@@ -9,6 +9,8 @@ import java.io.InputStream
 /**
  * Categorical values are sorted alphabetically.
  *
+ * Skipping null values.
+ *
  * @return 'guessed' schema
  */
 internal fun csvToSchema(csv: InputStream, categoricalLimit: Int = 5000): Schema {
@@ -24,7 +26,12 @@ internal fun csvToSchema(csv: InputStream, categoricalLimit: Int = 5000): Schema
     var row = parser.parseNext()
     while (row != null) {
         (0..row.size - 1)
-                .filter { collectors[it].size < categoricalLimit }
+                .filter {
+                    // limit how many values can still be considered categorical
+                    collectors[it].size < categoricalLimit
+                    // skip nulls
+                    && row[it] != null
+                }
                 .forEach { collectors[it].add(row[it]) }
         row = parser.parseNext()
     }

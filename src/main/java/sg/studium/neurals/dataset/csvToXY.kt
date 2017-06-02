@@ -2,6 +2,7 @@ package sg.studium.neurals.dataset
 
 import com.univocity.parsers.csv.CsvParser
 import com.univocity.parsers.csv.CsvParserSettings
+import org.slf4j.LoggerFactory
 import java.io.InputStream
 
 /**
@@ -73,16 +74,33 @@ fun csvToXY(csvIn: InputStream, labelFeatureName: String): XY {
     val widthY = labels.last - labels.first + 1
     val widthX = row.size - widthY
 
+    var skippedNullRows = 0
+
     while (row != null) {
-        X.add(kotlin.DoubleArray(widthX, {
-            if (it < labels.first)
-                row[it].toDouble()
-            else
-                row[it + widthY].toDouble()
-        }))
-        Y.add(kotlin.DoubleArray(widthY, { row[it + labels.first].toDouble() }))
+        // only if all values provided, skipping rows with any null fields
+        if (row.none { it == null }) {
+            X.add(kotlin.DoubleArray(widthX, {
+                if (it < labels.first)
+                    row[it].toDouble()
+                else
+                    row[it + widthY].toDouble()
+            }))
+            Y.add(kotlin.DoubleArray(widthY, { row[it + labels.first].toDouble() }))
+        } else {
+            skippedNullRows++
+        }
+
         row = parser.parseNext()
     }
     parser.stopParsing()
+
+    if (skippedNullRows > 0) Logger.LOG.warn("{} rows skipped from csv file due to null values", skippedNullRows)
+
     return XY(X, Y, header, header.slice(labels).toTypedArray())
+}
+
+internal class Logger {
+    internal companion object {
+        val LOG = LoggerFactory.getLogger(Logger::class.java)!!
+    }
 }

@@ -62,4 +62,32 @@ class CsvDataSetIteratorTest {
         assertEquals(10, ds.labels.rows())
     }
 
+    @Test
+    fun missingValues() {
+        val iterator = CsvDataSetIterator({ resource("cpu.with.vendor.missing.onehot.csv") }, "class", 10)
+        assertEquals(
+                listOf("vendor[adviser]", "vendor[amdahl]", "vendor[apollo]", "vendor[basf]", "vendor[bti]", "vendor[burroughs]", "vendor[c.r.d]", "vendor[cambex]", "vendor[cdc]", "vendor[dec]", "vendor[dg]", "vendor[formation]", "vendor[four-phase]", "vendor[gould]", "vendor[harris]", "vendor[honeywell]", "vendor[hp]", "vendor[ibm]", "vendor[ipl]", "vendor[magnuson]", "vendor[microdata]", "vendor[nas]", "vendor[ncr]", "vendor[nixdorf]", "vendor[perkin-elmer]", "vendor[prime]", "vendor[siemens]", "vendor[sperry]", "vendor[sratus]", "vendor[wang]", "MYCT", "MMIN", "MMAX", "CACH", "CHMIN", "CHMAX", "class"),
+                iterator.getAllColumns().toList())
+        assertEquals(
+                listOf("class"),
+                iterator.getlYColumns().toList())
+        assertEquals(36, iterator.inputColumns())
+        assertEquals(1, iterator.totalOutcomes())
+        var ds = iterator.next()
+        var total = ds.features.rows()
+        assertEquals(36, ds.features.columns())
+        assertEquals(10, ds.features.rows())
+        assertEquals(1, ds.labels.columns())
+        assertEquals(10, ds.labels.rows())
+        while (iterator.hasNext()) {
+            ds = iterator.next()
+            total += ds.features.rows()
+        }
+        assertEquals(11, total)
+        assertEquals(36, ds.features.columns())
+        assertEquals(1, ds.features.rows()) // total 209, last one 9
+        assertEquals(1, ds.labels.columns())
+        assertEquals(1, ds.labels.rows())
+    }
+
 }
