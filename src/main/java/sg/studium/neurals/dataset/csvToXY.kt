@@ -8,7 +8,7 @@ import java.io.InputStream
 /**
  * This implementation does not require a header as labels specified by indices.
  *
- * @param csvIn one-hot csv, all values will be read as double
+ * @param csvIn one-hot csv, all values will be read as double. Stream will be closed once done.
  * @param labelColsFrom index of first label column, 0 based
  * @param labelColsTo index of last label column, 0 based
  * @param header if the csv file has a header row to be ignored
@@ -55,7 +55,7 @@ fun csvToXY(csvIn: InputStream, labelColsFrom: Int, labelColsTo: Int, header: Bo
  *
  * Label columns have to be subsequent columns.
  *
- * @param csvIn one-hot csv, all values will be read as double
+ * @param csvIn one-hot csv, all values will be read as double. Stream will be closed once done.
  * @param labelFeatureName will be compared as "labelFeatureName[" prefix or with exact match, should not include the "["
  * @return [XY]
  */

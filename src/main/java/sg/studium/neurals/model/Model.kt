@@ -1,5 +1,8 @@
 package sg.studium.neurals.model
 
+/**
+ * Predictive model.
+ */
 interface Model {
 
     /**
@@ -15,7 +18,8 @@ interface Model {
     fun predict(explanatory: Map<String, Any>): Map<String, Double>
 
     /**
-     * Alternative way to predict: X -> Y
+     * Alternative way to predict: X -> Y. Relies that the order of elements of X and Y are the same as during model
+     * building / training. (e.g. it might mean something very different for linear models.
      *
      * @param X X, before standardization (the model will do it)
      * @return Y

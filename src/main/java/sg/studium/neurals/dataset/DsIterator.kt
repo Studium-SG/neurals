@@ -2,6 +2,9 @@ package sg.studium.neurals.dataset
 
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator
 
+/**
+ * Extension of Dl4j's [DataSetIterator] to access all column names and label column names (Y).
+ */
 interface DsIterator : DataSetIterator {
 
     /**

@@ -1,5 +1,8 @@
 package sg.studium.neurals.dataset
 
+/**
+ * Data structure for predictive X -> Y problems.
+ */
 class XY(
         val X: List<DoubleArray>,
         val Y: List<DoubleArray>,

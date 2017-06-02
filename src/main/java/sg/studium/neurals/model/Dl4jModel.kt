@@ -16,6 +16,9 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
+/**
+ * Practically usable Dl4j [MultiLayerNetwork] with [NormalizerStandardize] and column labels.
+ */
 class Dl4jModel(
         private val colsX: List<String>,
         private val colsY: List<String>,

@@ -14,6 +14,10 @@ import java.io.OutputStream
 
 
 /**
+ * @param csvIn input stream, will be closed once done.
+ * @param csvOut output stream, will be closed once done.
+ * @param schemaIn schema of input data, used for column labels
+ * @param writeHeaders if headers should be written, default true
  * @return output schema after one-hot transformation of categorical columns
  */
 fun csvToOneHot(csvIn: InputStream, csvOut: OutputStream, schemaIn: Schema, writeHeaders: Boolean = true): Schema {
@@ -49,6 +53,7 @@ fun csvToOneHot(csvIn: InputStream, csvOut: OutputStream, schemaIn: Schema, writ
     }
     parser.stopParsing()
     writer.close()
+    csvOut.close()
 
     if (skippedNullRows > 0) Logger.LOG.warn("{} rows skipped from csv file due to null values", skippedNullRows)
 
@@ -56,8 +61,8 @@ fun csvToOneHot(csvIn: InputStream, csvOut: OutputStream, schemaIn: Schema, writ
 }
 
 /**
- * @param csvIn InputStream provider, as we will need to traverse the CSV two times (once to get the schema)
- * @param csvOut stream to write the one-hot CSV, always with header.
+ * @param csvIn InputStream provider, as we will need to traverse the CSV two times (once to get the schema). Streams will be closed once done.
+ * @param csvOut stream to write the one-hot CSV, always with header. Stream will be closed once done.
  */
 fun csvToOneHot(csvIn: () -> InputStream, csvOut: OutputStream) {
     csvIn.invoke().use { is1 ->

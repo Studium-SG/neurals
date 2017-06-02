@@ -11,6 +11,8 @@ import java.io.InputStream
  *
  * Skipping null values.
  *
+ * @param csv input stream, will be closed once done.
+ * @param categoricalLimit limit of how many distinct values can be considered as categorical variable
  * @return 'guessed' schema
  */
 internal fun csvToSchema(csv: InputStream, categoricalLimit: Int = 5000): Schema {
