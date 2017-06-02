@@ -39,7 +39,6 @@ class TrainClassificationInMemory {
             val normalizer = NormalizerStandardize()
             normalizer.fit(iterator)
             iterator.preProcessor = normalizer
-            NormalizerSerializer.getDefault().write(normalizer, "/tmp/iris.onehot.inmemory.normalizer")
 
             val netConf = NeuralNetConfiguration.Builder()
                     .seed(123)

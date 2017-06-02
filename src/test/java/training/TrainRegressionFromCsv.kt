@@ -37,7 +37,6 @@ class TrainRegressionFromCsv {
             val normalizer = NormalizerStandardize()
             normalizer.fit(iterator)
             iterator.preProcessor = normalizer
-            NormalizerSerializer.getDefault().write(normalizer, "/tmp/cpu.onehot.fromcsv.normalizer")
 
             val netConf = NeuralNetConfiguration.Builder()
                     .seed(123)
