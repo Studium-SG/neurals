@@ -22,8 +22,7 @@ class CsvDataSetIterator(
     private val xWidth: Int
     private val yWidth: Int
 
-    private val parserSettings = CsvParserSettings()
-    private val parser = CsvParser(parserSettings)
+    private var parser: CsvParser
 
     private lateinit var header: Array<String>
     private var nextRecord: Array<String>? = null
@@ -31,6 +30,9 @@ class CsvDataSetIterator(
     private var _preProcessor: DataSetPreProcessor? = null
 
     init {
+        val parserSettings = CsvParserSettings()
+        parserSettings.maxColumns = 2048
+        parser = CsvParser(parserSettings)
         reset()
         labels = detectLabels(header, labelFeatureName)
         yWidth = (labels.last - labels.first + 1)

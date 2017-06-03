@@ -16,6 +16,7 @@ import java.io.InputStream
  */
 fun csvToXY(csvIn: InputStream, labelColsFrom: Int, labelColsTo: Int, header: Boolean = true): XY {
     val parserSettings = CsvParserSettings()
+    parserSettings.maxColumns = 2048
     val parser = CsvParser(parserSettings)
 
     parser.beginParsing(csvIn)
