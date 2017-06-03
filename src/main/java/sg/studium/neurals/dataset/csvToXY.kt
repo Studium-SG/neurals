@@ -33,7 +33,12 @@ fun csvToXY(csvIn: InputStream, labelColsFrom: Int, labelColsTo: Int, header: Bo
     val widthY = labelColsTo - labelColsFrom + 1
     val widthX = row.size - widthY
 
+    var skippedNullRows = 0
+    var totalRows = 0
+
     while (row != null) {
+        // only if all values provided, skipping rows with any null fields
+        if (row.none { it == null }) {
         X.add(kotlin.DoubleArray(widthX, {
             if (it < labelColsFrom)
                 row[it].toDouble()
@@ -41,9 +46,18 @@ fun csvToXY(csvIn: InputStream, labelColsFrom: Int, labelColsTo: Int, header: Bo
                 row[it + widthY].toDouble()
         }))
         Y.add(kotlin.DoubleArray(widthY, { row[it + labelColsFrom].toDouble() }))
+        } else {
+            skippedNullRows++
+        }
+
+        totalRows++
         row = parser.parseNext()
     }
     parser.stopParsing()
+
+    if (skippedNullRows > 0) Logger.LOG.warn("{} rows skipped from csv file due to null values ({}%)",
+            skippedNullRows, (skippedNullRows * 100) / totalRows)
+
     return XY(X, Y,
             headerRow,
             if (headerRow.isEmpty()) headerRow else headerRow.slice(IntRange(labelColsFrom, labelColsTo)).toTypedArray())
@@ -62,6 +76,7 @@ fun csvToXY(csvIn: InputStream, labelColsFrom: Int, labelColsTo: Int, header: Bo
  */
 fun csvToXY(csvIn: InputStream, labelFeatureName: String): XY {
     val parserSettings = CsvParserSettings()
+    parserSettings.maxColumns = 2048
     val parser = CsvParser(parserSettings)
 
     parser.beginParsing(csvIn)
