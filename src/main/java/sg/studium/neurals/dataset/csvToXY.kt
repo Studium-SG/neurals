@@ -75,6 +75,7 @@ fun csvToXY(csvIn: InputStream, labelFeatureName: String): XY {
     val widthX = row.size - widthY
 
     var skippedNullRows = 0
+    var totalRows = 0
 
     while (row != null) {
         // only if all values provided, skipping rows with any null fields
@@ -90,11 +91,13 @@ fun csvToXY(csvIn: InputStream, labelFeatureName: String): XY {
             skippedNullRows++
         }
 
+        totalRows++
         row = parser.parseNext()
     }
     parser.stopParsing()
 
-    if (skippedNullRows > 0) Logger.LOG.warn("{} rows skipped from csv file due to null values", skippedNullRows)
+    if (skippedNullRows > 0) Logger.LOG.warn("{} rows skipped from csv file due to null values ({}%)",
+            skippedNullRows, (skippedNullRows * 100) / totalRows)
 
     return XY(X, Y, header, header.slice(labels).toTypedArray())
 }

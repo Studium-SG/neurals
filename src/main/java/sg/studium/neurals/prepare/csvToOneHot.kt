@@ -41,6 +41,7 @@ fun csvToOneHot(csvIn: InputStream, csvOut: OutputStream, schemaIn: Schema, writ
         writer.writeRow(tp.finalSchema.columnNames as Collection<Any>?)
 
     var skippedNullRows = 0
+    var totalRows = 0
     var row = parser.parseNext()
     while (row != null) {
         // only if all values provided, skipping rows with any null fields
@@ -49,13 +50,15 @@ fun csvToOneHot(csvIn: InputStream, csvOut: OutputStream, schemaIn: Schema, writ
         } else {
             skippedNullRows++
         }
+        totalRows++
         row = parser.parseNext()
     }
     parser.stopParsing()
     writer.close()
     csvOut.close()
 
-    if (skippedNullRows > 0) Logger.LOG.warn("{} rows skipped from csv file due to null values", skippedNullRows)
+    if (skippedNullRows > 0) Logger.LOG.warn("{} rows skipped from csv file due to null values ({}%)",
+            skippedNullRows, (skippedNullRows * 100) / totalRows)
 
     return tp.finalSchema
 }
