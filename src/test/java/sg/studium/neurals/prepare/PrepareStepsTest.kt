@@ -1,9 +1,8 @@
 package sg.studium.neurals.prepare
 
-import org.apache.commons.io.IOUtils
-import org.datavec.api.transform.schema.Schema
 import org.junit.Test
 import resource
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import kotlin.test.assertEquals
 
@@ -312,26 +311,17 @@ columns:
 """
 
     @Test
-    fun oneHotRegressionWithSchema() {
-        val schemaIn = Schema.fromYaml(IOUtils.toString(resource("cpu.with.vendor.schema.yaml")))
-        val baos = ByteArrayOutputStream()
-        csvToOneHot(
-                resource("cpu.with.vendor.csv"),
-                baos,
-                schemaIn
-        )
-        baos.close()
-//        println(schemaOut.toYaml())
-//        println(baos.toString())
-        assertEquals(cpuOneHotTxt, baos.toString())
-    }
-
-    @Test
     fun oneHotRegression() {
         val baos = ByteArrayOutputStream()
-        csvToOneHot({ resource("cpu.with.vendor.csv") }, baos)
+        val outHeader = csvToOneHot({ resource("cpu.with.vendor.csv") }, baos)
         baos.close()
         assertEquals(cpuOneHotTxt, baos.toString())
+        assertEquals(listOf("vendor[adviser]", "vendor[amdahl]", "vendor[apollo]", "vendor[basf]", "vendor[bti]",
+                "vendor[burroughs]", "vendor[c.r.d]", "vendor[cambex]", "vendor[cdc]", "vendor[dec]", "vendor[dg]",
+                "vendor[formation]", "vendor[four-phase]", "vendor[gould]", "vendor[harris]", "vendor[honeywell]",
+                "vendor[hp]", "vendor[ibm]", "vendor[ipl]", "vendor[magnuson]", "vendor[microdata]", "vendor[nas]",
+                "vendor[ncr]", "vendor[nixdorf]", "vendor[perkin-elmer]", "vendor[prime]", "vendor[siemens]", "vendor[sperry]",
+                "vendor[sratus]", "vendor[wang]", "MYCT", "MMIN", "MMAX", "CACH", "CHMIN", "CHMAX", "class"), outHeader.toList())
     }
 
     private val irisOneHotTxt = """sepallength,sepalwidth,petallength,petalwidth,class[Iris-setosa],class[Iris-versicolor],class[Iris-virginica]
@@ -488,23 +478,13 @@ columns:
 """
 
     @Test
-    fun oneHotClassificationWithSchema() {
-        val schemaIn = csvToSchema(resource("iris.csv"))
-        val baos = ByteArrayOutputStream()
-        csvToOneHot(
-                resource("iris.csv"),
-                baos,
-                schemaIn
-        )
-        assertEquals(irisOneHotTxt, baos.toString())
-    }
-
-    @Test
     fun oneHotClassification() {
         val baos = ByteArrayOutputStream()
-        csvToOneHot({ resource("iris.csv") }, baos)
+        val outHeader = csvToOneHot({ resource("iris.csv") }, baos)
         baos.close()
         assertEquals(irisOneHotTxt, baos.toString())
+        assertEquals(listOf("sepallength", "sepalwidth", "petallength", "petalwidth", "class[Iris-setosa]",
+                "class[Iris-versicolor]", "class[Iris-virginica]"), outHeader.toList())
     }
 
     @Test
@@ -522,6 +502,21 @@ columns:
 0,0,0,0,1,350,64,64,0,1,4,15
 0,0,0,0,1,200,512,16000,0,4,32,64
 """, baos.toString())
+    }
+
+    @Test fun oneHotWithTemplate() {
+        val templateHeader = arrayOf("f1[v1]", "f1[v2]", "f2")
+        val csvIn = """f1,f2
+v1,2.3
+v2,5.2
+"""
+        val baos = ByteArrayOutputStream()
+        val outHeader = csvToOneHot(ByteArrayInputStream(csvIn.toByteArray()), templateHeader, baos)
+        assertEquals("""f1[v1],f1[v2],f2
+1,0,2.3
+0,1,5.2
+""", baos.toString())
+        assertEquals(templateHeader.toList(), outHeader.toList())
     }
 
 }
